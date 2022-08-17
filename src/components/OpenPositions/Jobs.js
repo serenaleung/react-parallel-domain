@@ -6,7 +6,7 @@ import colors from "../../theme/colors";
 
 export default function Jobs({ job }) {
     return (
-        <Card sx={{ minWidth: { xs: 450, sm: 550, md: 370 }, maxWidth: { xs: 450, md: 370 }, minHeight: 240, maxHeight: 240, backgroundColor: "#243341", p: "1rem" }}>
+        <Card sx={{ minWidth: { xs: "90vw", md: "46vw", lg: 370 }, maxWidth: { xs: "90vw", md: "46vw", lg: 370 }, minHeight: 240, maxHeight: 240, backgroundColor: "#243341", p: "1rem" }}>
             <Link href="https://jobs.lever.co/paralleldomain/a71b87c8-b0a6-4425-bb96-91c169ca2318/apply" underline="none">
                 <Grid sx={{ height: 210, p: 2, display: "flex", flexDirection: "column", justifyContent: "space-evenly" }}>
                     <Box>

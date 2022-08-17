@@ -61,8 +61,6 @@ function Home() {
         )
     }));
 
-  console.log("filtered", filtered)
-
   return (
     <>
       <Banner src={banner} text={"Join Us"} />
@@ -147,7 +145,7 @@ function Home() {
                 }}>{list.team}</Typography>
                 <Grid container spacing={1} sx={{ mt: "40px" }}>
                   {list.jobs.map((job) => (
-                    <Grid item>
+                    <Grid item key={job.id}>
                       <Jobs job={job} key={job.id} />
                     </Grid>
                   ))}
