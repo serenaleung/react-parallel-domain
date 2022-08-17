@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, FormControl, Select, MenuItem, Container, Stack, Link, Button, CircularProgress } from "@mui/material";
+import { Box, Typography, Container, Stack, Grid, CircularProgress } from "@mui/material";
+import SelectDropdown from './OpenPositions/SelectDropdown';
+import Jobs from './OpenPositions/Jobs';
+import Banner from "./Banner";
+import banner from '../images/banner.jpeg';
+import colors from "../theme/colors";
 
 function Home() {
   const [data, setData] = useState([]);
@@ -59,91 +64,100 @@ function Home() {
   console.log("filtered", filtered)
 
   return (
-    <Box sx={{ maxWidth: "1024px", width: "100%", margin: "0 auto", py: 5 }}>
-      <Typography variant="h3" sx={{ textAlign: "center", mb: 2 }}>
-        Open Positions
-      </Typography>
-      <Typography
-        sx={{ textAlign: "center", maxWidth: "768px", margin: "0 auto" }}
+    <>
+      <Banner src={banner} text={"Join Us"} />
+      <Box
+        sx={{
+          maxWidth: "1024px",
+          width: "100%",
+          margin: "0 auto",
+          py: 5
+        }}
       >
-        Our data is training and testing autonomous systems at companies around
-        the world. We're looking for talented visionaries to help us to expand
-        our impact on the way artificial intelligence is developed.
-      </Typography>
-      {isLoading || data.length === 0 ? <CircularProgress /> : <>
-        <Typography>Filter By:</Typography>
-        <FormControl>
-          <Select
-            value={selectedLocation}
-            onChange={e => setSelectedLocation(e.target.value)}
-          >
-            <MenuItem value="all">
-              {filterLabels.location}
-            </MenuItem>
-            {uniqueCategories.location.map((opt, i) => (
-              <MenuItem key={i} value={opt}>
-                {opt}
-              </MenuItem>
+        <Typography
+          sx={{
+            fontSize: { xs: "1.6rem", lg: "2.1rem" },
+            fontWeight: "400",
+            textAlign: "center",
+            letterSpacing: "-1px",
+            mt: "2.5rem",
+            mb: 2
+          }}
+        >
+          Open Positions
+        </Typography>
+        <Typography variant="body1"
+          sx={{
+            fontSize: { md: "1rem", lg: "1.3rem" },
+            fontWeight: "400",
+            textAlign: "center",
+            maxWidth: "768px",
+            margin: "0 auto",
+            p: "0 1.5rem 2.5rem 1.5rem"
+          }}
+        >
+          Our data is training and testing autonomous systems at companies around the world. We're looking for talented visionaries to help us to expand our impact on the way artificial intelligence is developed.
+        </Typography>
+      </Box>
+      {
+        isLoading || data.length === 0 ? <Box sx={{
+          display: "flex", justifyContent: "center",
+        }}><CircularProgress sx={{
+          color: colors.primary
+        }} /></Box> : <>
+          <Container maxWidth="lg" sx={{ px: "1.5rem" }}>
+            <Grid container spacing={0} alignItems="center">
+              <Typography
+                sx={{ mr: 4 }}
+              >
+                Filter By:
+              </Typography>
+              <SelectDropdown
+                items={uniqueCategories.location}
+                value={selectedLocation}
+                onChange={(e) => setSelectedLocation(e.target.value)}
+                labels={filterLabels.location}
+              />
+              <SelectDropdown
+                items={uniqueCategories.team}
+                value={selectedTeam}
+                onChange={(e) => setSelectedTeam(e.target.value)}
+                labels={filterLabels.team}
+              />
+              <SelectDropdown
+                items={uniqueCategories.commitment}
+                value={selectedCommitment}
+                onChange={(e) => setSelectedCommitment(e.target.value)}
+                labels={filterLabels.commitment}
+              />
+            </Grid>
+          </Container>
+          <Container maxWidth="lg" sx={{ mb: "6rem", px: "1.5rem" }}>
+            {filtered.map((list) => (
+              <Stack key={list.team} sx={{ display: !list.jobs.length ? "none" : "block" }}>
+                <Typography sx={{
+                  textTransform: "uppercase",
+                  color: colors.primary,
+                  fontSize: "15px",
+                  letterSpacing: "2px",
+                  lineHeight: "1.2",
+                  fontWeight: "bold",
+                  mt: "80px",
+                  mb: "10px",
+                }}>{list.team}</Typography>
+                <Grid container spacing={1} sx={{ mt: "40px" }}>
+                  {list.jobs.map((job) => (
+                    <Grid item>
+                      <Jobs job={job} key={job.id} />
+                    </Grid>
+                  ))}
+                </Grid>
+              </Stack>
             ))}
-          </Select>
-        </FormControl>
-        <FormControl>
-          <Select
-            value={selectedTeam}
-            onChange={e => setSelectedTeam(e.target.value)}
-          >
-            <MenuItem value="all">
-              {filterLabels.team}
-            </MenuItem>
-            {uniqueCategories.team.map((opt, i) => (
-              <MenuItem key={i} value={opt}>
-                {opt}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl>
-          <Select
-            value={selectedCommitment}
-            onChange={e => setSelectedCommitment(e.target.value)}
-          >
-            <MenuItem value="all">
-              {filterLabels.commitment}
-            </MenuItem>
-            {uniqueCategories.commitment.map((opt, i) => (
-              <MenuItem key={i} value={opt}>
-                {opt}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <Container>
-          {filtered.map((list) => (
-            <Stack key={list.team}>
-              <Typography>{list.team}</Typography>
-              {list.jobs.map((job) => (
-                <Link href="https://jobs.lever.co/paralleldomain/a71b87c8-b0a6-4425-bb96-91c169ca2318/apply">
-                  <Box>
-                    <Typography variant="h4" sx={{ mb: 1 }}>
-                      {job.text}
-                    </Typography>
-                  </Box>
-                  <Box>
-                    <Typography>
-                      {job.categories.location} / {job.categories.team}
-                    </Typography>
-                  </Box>
-                  <Box sx={{
-                  }}>
-                    <Button> Apply</Button>
-                  </Box>
-                </Link>
-              ))}
-            </Stack>
-          ))}
-        </Container>
-      </>}
-    </Box >
+          </Container>
+        </>
+      }
+    </>
   );
 }
 
