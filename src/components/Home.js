@@ -61,8 +61,6 @@ function Home() {
         )
     }));
 
-  console.log("filtered", filtered)
-
   return (
     <>
       <Banner src={banner} text={"Join Us"} />
